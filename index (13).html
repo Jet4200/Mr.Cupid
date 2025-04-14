@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Need Advice? Ask Mr. Cupid</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E91E63',
+                        secondary: '#FF94B8',
+                        accent: '#FF4081',
+                        dark: {
+                            primary: '#FF4081',
+                            secondary: '#FF80AB',
+                            bg: '#1A1A1A',
+                            card: '#2A2A2A',
+                            text: '#F0F0F0'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fadeIn': 'fadeIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 15px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 15px rgba(233, 30, 99, 0.2)',
+                        'dark-glow': '0 0 15px rgba(255, 64, 129, 0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-image: linear-gradient(to bottom right, rgba(233, 30, 99, 0.03) 0%, rgba(233, 30, 99, 0.01) 100%);
+        }
+        
+        .dark body {
+            background-image: linear-gradient(to bottom right, rgba(255, 64, 129, 0.05) 0%, rgba(255, 64, 129, 0.01) 100%);
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to right, #E91E63, #FF4081);
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
+        }
+        
+        .dark .btn-primary {
+            background-image: linear-gradient(to right, #FF4081, #FF80AB);
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(233, 30, 99, 0.25);
+        }
+        
+        .dark .btn-primary:hover {
+            box-shadow: 0 6px 18px rgba(255, 64, 129, 0.25);
+        }
+        
+        .btn-secondary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+        }
+        
+        .emoji-float {
+            animation: float 6s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .transition-screen {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+        
+        .heart-beat {
+            animation: heartBeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .price-tag {
+            font-size: 24px;
+            font-weight: 700;
+            color: #E91E63;
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            background: rgba(233, 30, 99, 0.1);
+            margin: 0 5px;
+        }
+        
+        .dark .price-tag {
+            color: #FF4081;
+            background: rgba(255, 64, 129, 0.15);
+        }
+        
+        .venmo-link {
+            cursor: pointer;
+            color: #E91E63;
+            font-weight: bold;
+            position: relative;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .dark .venmo-link {
+            color: #FF4081;
+        }
+        
+        .venmo-link:hover {
+            transform: translateY(-1px);
+            text-shadow: 0 2px 10px rgba(233, 30, 99, 0.3);
+        }
+        
+        .dark .venmo-link:hover {
+            text-shadow: 0 2px 10px rgba(255, 64, 129, 0.3);
+        }
+        
+        .tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 100;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col dark:bg-dark-bg dark:text-dark-text">
+    <div class="container mx-auto px-4 py-8 max-w-2xl flex-grow">
+        <!-- Header -->
+        <header class="text-center mb-10 animate-fadeIn">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary dark:text-dark-primary mb-2 flex justify-center items-center">
+                <span class="emoji-float mr-2">💘</span>
+                Mr. Cupid
+                <span class="emoji-float ml-2">💘</span>
+            </h1>
+            <p class="text-gray-700 dark:text-gray-300 text-lg max-w-xl mx-auto leading-relaxed">
+                Hi, I'm Mr. Cupid -- your go-to for love advice and more. Need help with your love life or anything else on your heart? 
+                I'm here to give thoughtful advice, personally written just for you. <span class="heart-beat">❤️</span>
+            </p>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <!-- Payment Screen -->
+            <div id="payment-screen" class="card bg-white dark:bg-dark-card rounded-xl shadow-soft dark:shadow-dark-glow p-6 mb-6 transition-screen">
+                <h2 class="text-2xl font-bold text-center mb-4 text-primary dark:text-dark-primary">Get Personal Advice <span class="emoji-float">💖</span></h2>
+                <p class="text-center mb-6">To receive personalized advice from Mr. Cupid, please send <span class="price-tag">$3</span> via Venmo.</p>
+                
+                <div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-lg mb-6 border border-gray-200 dark:border-gray-600">
+                    <p class="font-medium mb-2">Please send payment to:</p>
+                    <div class="text-center mb-2">
+                        <span id="venmo-link" class="venmo-link text-lg">MCvenmo</span>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Press Venmo to copy payment info</p>
+                    </div>
+                    <div class="flex items-center justify-center text-lg font-bold py-2 mb-2">
+                        <span>Amount: </span>
+                        <span class="price-tag ml-2">$3</span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        <span class="text-primary dark:text-dark-primary font-medium">Important:</span> Include your question in the Venmo payment note.
+                    </p>
+                    <div class="bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-300 dark:border-gray-600">
+                        <h4 class="font-medium text-primary dark:text-dark-primary mb-1">Example Venmo Note:</h4>
+                        <p class="text-sm italic text-gray-700 dark:text-gray-300">
+                            "How do I know if my crush likes me back? We've been friends for years but lately things feel different."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <button id="payment-completed-btn" class="w-full btn-primary text-white font-bold py-3 px-6 rounded-lg">
+                        I've Completed Payment 💝
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tooltip element -->
+            <div id="tooltip" class="tooltip">Venmo info copied to clipboard!</div>
+            
+            <!-- Confirmation Screen -->
+            <div id="confirmation-screen" class="hidden card bg-white dark:bg-dark-card rounded-xl shadow-soft dark:shadow-dark-glow p-6 mb-6 text-center">
+                <div class="text-center mb-4">
+                    <span class="text-5xl heart-beat">💝</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-4 text-primary dark:text-dark-primary">Thank You!</h2>
+                <p class="mb-4">Your payment has been received!</p>
+                <p class="mb-6">Mr. Cupid will respond to you within 2 days via the Venmo messaging system. If you don't receive a response within 5 days, you'll be entitled to a full refund. *Weekends don't count. Workdays: Monday - Friday, 10am-6pm: If you message on a Friday expect a response on a Monday*</p>
+                <button id="new-question-btn" class="btn-primary text-white font-bold py-3 px-6 rounded-lg">
+                    Return to Home 💭
+                </button>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="mt-10 text-sm text-gray-600 dark:text-gray-400">
+            <div class="border-t border-gray-300 dark:border-gray-700 pt-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <span class="mr-1 text-primary dark:text-dark-primary">📜</span> Terms of Service
+                        </h3>
+                        <p>By using Mr. Cupid's services, you agree to our terms. All advice is provided for entertainment and guidance purposes only. Mr. Cupid is not a licensed professional counselor. The advice given should not replace professional advice.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <span class="mr-1 text-primary dark:text-dark-primary">🔒</span> Privacy Policy
+                        </h3>
+                        <p>Your questions and personal details will be kept confidential. Your information will only be used to respond to your query and will not be shared with third parties. Messages may be retained for quality assurance purposes.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <span class="mr-1 text-primary dark:text-dark-primary">💰</span> Refund Policy
+                        </h3>
+                        <p>If you do not receive a response within 5 days, you are entitled to a full refund. To request a refund, please contact us through the Venmo messaging system.</p>
+                    </div>
+                </div>
+                
+                <p class="text-center mt-8">
+                    &copy; <span id="current-year"></span> Mr. Cupid Love Advice. All hearts reserved. <span class="emoji-float">💕</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Set up dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Handle navigation between screens with smooth transitions
+        const paymentScreen = document.getElementById('payment-screen');
+        const confirmationScreen = document.getElementById('confirmation-screen');
+        
+        function showScreen(screenToShow, screenToHide) {
+            screenToHide.classList.add('hidden');
+            screenToShow.classList.remove('hidden');
+            
+            // Trigger reflow to restart animation
+            void screenToShow.offsetWidth;
+            screenToShow.classList.add('transition-screen');
+        }
+        
+        // Payment completed button - Show confirmation screen
+        document.getElementById('payment-completed-btn').addEventListener('click', function() {
+            showScreen(confirmationScreen, paymentScreen);
+        });
+        
+        // New question button - Go back to payment screen
+        document.getElementById('new-question-btn').addEventListener('click', function() {
+            showScreen(paymentScreen, confirmationScreen);
+        });
+        
+        // Add subtle hover effects to buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                if (this.querySelector('.emoji-float')) return;
+                
+                const emoji = this.textContent.includes('💝') ? '💝' : 
+                              this.textContent.includes('💭') ? '💭' : '';
+                
+                if (emoji) {
+                    const oldText = this.textContent;
+                    this.textContent = oldText.replace(emoji, '');
+                    
+                    const emojiSpan = document.createElement('span');
+                    emojiSpan.className = 'emoji-float';
+                    emojiSpan.textContent = emoji;
+                    this.appendChild(emojiSpan);
+                }
+            });
+        });
+        
+        // Venmo link - Copy to clipboard functionality
+        const venmoLink = document.getElementById('venmo-link');
+        const tooltip = document.getElementById('tooltip');
+        
+        venmoLink.addEventListener('click', function(e) {
+            // The Venmo URL to copy
+            const venmoURL = "https://venmo.com/code?user_id=4142013813359817021&created=1744652988";
+            
+            // Create a temporary element for copying
+            const el = document.createElement('textarea');
+            el.value = venmoURL;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            // Show tooltip near the mouse position
+            tooltip.style.left = (e.clientX + 10) + 'px';
+            tooltip.style.top = (e.clientY + 10) + 'px';
+            tooltip.classList.add('show');
+            
+            // Hide tooltip after 2 seconds
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
